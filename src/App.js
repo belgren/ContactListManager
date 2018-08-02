@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import InputForm from './components/InputForm.js';
-
+import ContactList from './components/ContactList.js';
 const serverUrl = "http://localhost:3000";
 const dbUrl = "http://localhost:3000/db";
 
@@ -12,6 +12,29 @@ class App extends Component {
     this.state = {
       contacts: [],
     }
+  }
+
+  componentDidMount(){
+    var self = this;
+    fetch(dbUrl+'/all', {
+      method: 'GET',
+    })
+    .then( (res) => {
+      if (res.status==200){
+        return res.json()
+      } else{
+        return [];
+      }
+    })
+
+    .then( (res) => {
+      self.setState({
+        contacts: res,
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
   //test request
   sendPing(){
@@ -58,6 +81,7 @@ class App extends Component {
           <h1 className="App-title">Contact List Manager</h1>
         </header>
         <InputForm submit={(event, data) => this.addContact(event, data)}></InputForm>
+        <ContactList contacts={this.state.contacts}/>
         <button className="btn btn-primary" onClick={this.sendPing}>Ping</button>
       </div>
     );

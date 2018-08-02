@@ -24,4 +24,15 @@ router.post('/add', (req, res) => {
     return res.send('pong');
   });
 
+  router.get('/all', (req,res) => {
+    Contact.find({}, function(err, contacts){
+      if (err){
+        res.send(err);
+        return;
+      } else{
+        res.send(contacts);
+      }
+    })
+  })
+
 module.exports = router;
