@@ -3,6 +3,8 @@ import './App.css';
 import InputForm from './components/InputForm.js';
 
 const serverUrl = "http://localhost:3000";
+const dbUrl = "http://localhost:3000/db";
+
 
 class App extends Component {
   constructor(props){
@@ -27,7 +29,25 @@ class App extends Component {
 
   addContact(event, data){
     console.log(data);
-    return
+    fetch(dbUrl + '/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.name,
+        number: data.number,
+        birthdate: data.birthdate,
+      })
+    }).then((res)=> {
+      if(res.status === 200) {
+        console.log("success")
+      } else {
+        console.log('failure')
+      }
+    }).catch((err) => {
+      // network error
+    })
   }
 
   //IN render, should add a ContactList component and a NewContactInput component
