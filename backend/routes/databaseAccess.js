@@ -35,4 +35,15 @@ router.post('/add', (req, res) => {
     })
   })
 
+  router.post('/delete', (req, res) =>{
+    console.log('in delete route')
+    Contact.remove({_id: req.body.id}, function(err){
+      if (err){
+        res.status(400).send('error adding to db');
+        return;
+      }
+    });
+    res.status(200).send('successfully deleted from db');
+  })
+
 module.exports = router;
