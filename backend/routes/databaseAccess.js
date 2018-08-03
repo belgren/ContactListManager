@@ -36,8 +36,7 @@ router.post('/add', (req, res) => {
   })
 
   router.post('/delete', (req, res) =>{
-    console.log('in delete route')
-    Contact.remove({_id: req.body.id}, function(err){
+    Contact.remove({_id: req.body.contact._id}, function(err){
       if (err){
         res.status(400).send('error adding to db');
         return;

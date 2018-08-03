@@ -17,6 +17,9 @@ class App extends Component {
     var self = this;
     fetch('/db/all', {
       method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
     })
     .then( (res) => {
       if (res.status===200){
@@ -63,18 +66,19 @@ class App extends Component {
       })
     }).then((res)=> {
       if(res.status === 200) {
-        console.log("success");
-
+        self.setState({
+          contacts: self.state.contacts.concat(data)
+        })
       } else {
         console.log('failure')
       }
     }).catch((err) => {
-      // network error
+      console.log(err);
     })
   }
 
   deleteContact(event, targetContact){
-    console.log(targetContact)
+    // console.log(targetContact)
     // var contactToDelete = this.state.contacts[index].name
     // this.setState({
     //   contactToDelete: contactToDelete,
@@ -83,9 +87,11 @@ class App extends Component {
     fetch('/db/delete', {
       method: 'post',
       headers: {
-        'Content-Type': 'application/text'
+        'Content-Type': 'application/json'
       },
-      body: targetContact,
+      body: JSON.stringify({
+        contact: targetContact
+      })
     })
     .then((res)=>{
       console.log(res.body)
