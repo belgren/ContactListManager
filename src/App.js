@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import InputForm from './components/InputForm.js';
 import ContactList from './components/ContactList.js';
-const serverUrl = "http://localhost:3000";
-const dbUrl = "http://localhost:3000/db";
-
 
 class App extends Component {
   constructor(props){
@@ -16,7 +13,7 @@ class App extends Component {
 
   componentDidMount(){
     var self = this;
-    fetch(dbUrl+'/all', {
+    fetch('/db/all', {
       method: 'GET',
     })
     .then( (res) => {
@@ -38,7 +35,7 @@ class App extends Component {
   }
   //test request
   sendPing(){
-    fetch(serverUrl+'/ping', {
+    fetch('/ping', {
       method: 'GET',
     })
     .then((res) => res.text())
@@ -51,8 +48,9 @@ class App extends Component {
   }
 
   addContact(event, data){
+    var self = this;
     console.log(data);
-    fetch(dbUrl + '/add', {
+    fetch('/db/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -64,7 +62,14 @@ class App extends Component {
       })
     }).then((res)=> {
       if(res.status === 200) {
-        console.log("success")
+        console.log("success");
+        self.setState({
+          contacts: self.state.contacts.concat([{
+            name: data.name,
+            number: data.number,
+            birthdate: data.birthdate,
+          }])
+        })
       } else {
         console.log('failure')
       }

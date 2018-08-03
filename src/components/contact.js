@@ -8,7 +8,9 @@ class Contact extends Component {
 
   render() {
     return (
-      null
+      // <td>{contact.name}</td>
+      // <td>{contact.number}</td>
+      // <td>{contact.birthdate}</td>
     )
   }
 }
